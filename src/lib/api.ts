@@ -24,10 +24,12 @@ export interface ChatHistoryItem {
   timestamp: string;
 }
 
+const VITE_API_URL = import.meta.env.VITE_API_URL;
+
 // API functions
 export const api = {
   async createLead(): Promise<number> {
-    const response = await fetch('http://localhost:8000/api/v1/leads/', {
+    const response = await fetch(`${VITE_API_URL}/api/v1/leads/`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({}),
@@ -39,7 +41,7 @@ export const api = {
   },
 
   async loadChatHistory(leadId: number): Promise<ChatHistoryItem[]> {
-    const response = await fetch(`http://localhost:8000/api/v1/chats/lead/${leadId}`, {
+    const response = await fetch(`${VITE_API_URL}/api/v1/chats/lead/${leadId}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -49,7 +51,7 @@ export const api = {
   },
 
   async sendMessage(message: string, leadId: number): Promise<string> {
-    const response = await fetch('http://localhost:8000/api/v1/chats/chatbot', {
+    const response = await fetch(`${VITE_API_URL}/api/v1/chats/chatbot`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lead_id: leadId, message }),
