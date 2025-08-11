@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Stellar Forge Corporation - Dark Futuristic Space-Tech Design System */
+
+@layer base {
+  :root {
+    /* Dark space-tech theme */
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --card: 224 71% 6%;
+    --card-foreground: 213 31% 91%;
+
+    --popover: 224 71% 6%;
+    --popover-foreground: 213 31% 91%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 224 71% 4%;
+
+    --secondary: 224 71% 10%;
+    --secondary-foreground: 213 31% 91%;
+
+    --muted: 215 28% 17%;
+    --muted-foreground: 217 11% 65%;
+
+    --accent: 142 76% 36%;
+    --accent-foreground: 213 31% 91%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 213 31% 91%;
+
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.75rem;
+
+    /* Stellar gradients */
+    --gradient-stellar: linear-gradient(135deg, hsl(217 91% 60%), hsl(142 76% 36%));
+    --gradient-space: linear-gradient(180deg, hsl(224 71% 4%), hsl(224 71% 8%));
+    --gradient-glow: radial-gradient(circle, hsl(217 91% 60% / 0.1), transparent);
+
+    /* Glows and shadows */
+    --glow-primary: 0 0 20px hsl(217 91% 60% / 0.5);
+    --glow-accent: 0 0 20px hsl(142 76% 36% / 0.3);
+    --shadow-stellar: 0 25px 50px -12px hsl(217 91% 60% / 0.25);
+  }
+
+  .dark {
+    /* Same as root for consistent dark theme */
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+    --card: 224 71% 6%;
+    --card-foreground: 213 31% 91%;
+    --popover: 224 71% 6%;
+    --popover-foreground: 213 31% 91%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 224 71% 4%;
+    --secondary: 224 71% 10%;
+    --secondary-foreground: 213 31% 91%;
+    --muted: 215 28% 17%;
+    --muted-foreground: 217 11% 65%;
+    --accent: 142 76% 36%;
+    --accent-foreground: 213 31% 91%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 213 31% 91%;
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 217 91% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
