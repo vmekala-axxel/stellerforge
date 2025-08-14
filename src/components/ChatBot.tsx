@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -68,26 +68,29 @@ const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFirstTime, setIsFirstTime] = useState(true);
   const [inputValue, setInputValue] = useState("");
+  const hasInitialized = useRef(false);
 
-  const { leadId, createNewLead } = useLead();
-  const { messages, isLoading, sendMessage, loadHistory } = useChat(leadId);
+  const { leadId, setStoredLeadId } = useLead();
+  const { messages, isLoading, sendMessage, initializeChat, isInitialized } = useChat();
 
-  // Load chat history when leadId changes
+  // Initialize chat when opening for the first time
   useEffect(() => {
-    if (leadId) {
-      loadHistory();
+    if (isOpen && !hasInitialized.current) {
+      hasInitialized.current = true;
+      const initChat = async () => {
+        const newLeadId = await initializeChat(leadId);
+        if (newLeadId) {
+          setStoredLeadId(newLeadId);
+        }
+      };
+      initChat();
     }
-  }, [leadId]);
+  }, [isOpen, leadId, initializeChat, setStoredLeadId]);
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || isLoading) return;
+    if (!inputValue.trim() || isLoading || !leadId) return;
 
-    let currentLeadId = leadId;
-    if (!currentLeadId) {
-      currentLeadId = await createNewLead();
-    }
-
-    await sendMessage(inputValue, currentLeadId);
+    await sendMessage(inputValue, leadId);
     setInputValue("");
   };
 

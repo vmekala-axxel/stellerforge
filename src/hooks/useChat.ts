@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { api } from '@/lib/api';
+import { useState, useRef } from 'react';
+import { api, ChatHistoryItem } from '@/lib/api';
 
 export interface ChatMessage {
   id: number;
@@ -8,7 +8,7 @@ export interface ChatMessage {
   timestamp?: string;
 }
 
-export const useChat = (leadId: number | null) => {
+export const useChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 1,
@@ -17,21 +17,37 @@ export const useChat = (leadId: number | null) => {
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
+  const initRef = useRef(false);
 
-  const loadHistory = async () => {
-    if (!leadId) return;
+  const initializeChat = async (leadId: number | null) => {
+    if (isInitialized || initRef.current) return;
     
     try {
-      const chatHistory = await api.loadChatHistory(leadId);
-      const historyMessages: ChatMessage[] = chatHistory.map((item, index) => ({
-        id: index + 1,
-        text: item.message,
-        isBot: item.sender === 'bot',
-        timestamp: item.timestamp,
-      }));
-      setMessages(historyMessages);
+      initRef.current = true;
+      setIsLoading(true);
+      const response = await api.initChat(leadId);
+      
+      // For new leads, keep the default welcome message
+      // For existing leads, we might want to show a continuation message
+      if (!response.is_new_lead) {
+        const continuationMessage: ChatMessage = {
+          id: 2,
+          text: "Welcome back! How can I help you today?",
+          isBot: true,
+        };
+        setMessages([continuationMessage]);
+      }
+      
+      setIsInitialized(true);
+      return response.lead.id;
     } catch (error) {
-      console.error('Error loading chat history:', error);
+      console.error('Error initializing chat:', error);
+      // Keep default welcome message on error
+      setIsInitialized(true);
+      return null;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -57,9 +73,6 @@ export const useChat = (leadId: number | null) => {
         isBot: true,
       };
       setMessages(prev => [...prev, botMessage]);
-
-      // Reload history for consistency
-      await loadHistory();
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage: ChatMessage = {
@@ -73,5 +86,5 @@ export const useChat = (leadId: number | null) => {
     }
   };
 
-  return { messages, isLoading, sendMessage, loadHistory };
+  return { messages, isLoading, sendMessage, initializeChat, isInitialized };
 };

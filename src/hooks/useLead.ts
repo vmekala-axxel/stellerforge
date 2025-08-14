@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { api } from '@/lib/api';
 
 export const useLead = () => {
   const [leadId, setLeadId] = useState<number | null>(null);
@@ -11,12 +10,10 @@ export const useLead = () => {
     }
   }, []);
 
-  const createNewLead = async () => {
-    const newLeadId = await api.createLead();
+  const setStoredLeadId = (newLeadId: number) => {
     setLeadId(newLeadId);
     localStorage.setItem('lead_id', newLeadId.toString());
-    return newLeadId;
   };
 
-  return { leadId, createNewLead };
+  return { leadId, setStoredLeadId };
 };

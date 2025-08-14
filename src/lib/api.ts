@@ -14,6 +14,7 @@ export interface Lead {
   intent: string | null;
   preferred_contact: string | null;
   score: number;
+  created_at: string;
 }
 
 export interface ChatHistoryItem {
@@ -24,29 +25,23 @@ export interface ChatHistoryItem {
   timestamp: string;
 }
 
+export interface InitChatResponse {
+  lead: Lead;
+  is_new_lead: boolean;
+}
+
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 // API functions
 export const api = {
-  async createLead(): Promise<number> {
-    const response = await fetch(`${VITE_API_URL}/api/v1/leads/`, {
+  async initChat(leadId: number | null): Promise<InitChatResponse> {
+    const response = await fetch(`${VITE_API_URL}/api/v1/chats/initchat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}),
+      body: JSON.stringify({ lead_id: leadId }),
     });
 
-    if (!response.ok) throw new Error('Failed to create lead');
-    const lead: Lead = await response.json();
-    return lead.id;
-  },
-
-  async loadChatHistory(leadId: number): Promise<ChatHistoryItem[]> {
-    const response = await fetch(`${VITE_API_URL}/api/v1/chats/lead/${leadId}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    if (!response.ok) throw new Error('Failed to load chat history');
+    if (!response.ok) throw new Error('Failed to initialize chat');
     return response.json();
   },
 
