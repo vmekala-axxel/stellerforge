@@ -54,6 +54,8 @@ export const api = {
 
     if (!response.ok) throw new Error('Failed to send message');
     const data = await response.json();
-    return data.reply;
+    // return data.reply;    
+    return data;
+
   },
 };

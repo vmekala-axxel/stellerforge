@@ -6,8 +6,8 @@ const Header = () => {
 
   const navItems = [
     { name: "Home", path: "/" },
-    { name: "Onboarding", path: "/onboarding" },
-    { name: "Materials", path: "/materials" },
+    // { name: "Onboarding", path: "/onboarding" },
+    { name: "Licensing", path: "/licensing" },
   ];
 
   return (
@@ -19,7 +19,7 @@ const Header = () => {
             to="/" 
             className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent hover:opacity-80 transition-opacity"
           >
-            Stellar Forge Corporation
+            GM Freezone Sharjah
           </Link>
 
           {/* Navigation Links */}

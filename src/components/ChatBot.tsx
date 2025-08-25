@@ -16,30 +16,63 @@ const LoadingDots = () => (
   </div>
 );
 
-const MessageBubble = ({ message }: { message: ChatMessage }) => (
-  <div className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}>
-    <div
-      className={`max-w-[80%] p-3 rounded-lg text-sm ${
-        message.isBot
+const MessageBubble = ({ message }: { message: ChatMessage }) => {
+
+  const displayText =
+    typeof message.text === "string"
+      ? message.text
+      : message.text.reply;
+
+
+  return (
+    <div className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}>
+      <div
+        className={`max-w-[80%] p-3 rounded-lg text-sm ${message.isBot
           ? "bg-secondary text-secondary-foreground"
           : "bg-primary text-primary-foreground"
-      }`}
-    >
-      {message.text}
+          }`}
+      >
+        {displayText}
+      </div>
     </div>
-  </div>
+  )
+};
+
+const SuggestionCard = ({ suggestions }) => (
+<>
+  {suggestions.map((license, idx) => (
+
+    <Card className="bg-muted/10 border border-muted rounded-lg p-4 shadow-sm w-full max-w-md">
+    <div className="text-primary font-semibold text-lg mb-1">🏭 {license.license_type}</div>
+    <div className="text-muted-foreground text-sm mb-3">
+      {license.duration}
+    </div>
+
+    <div className="space-y-2 text-sm text-muted-foreground">
+      <div>
+        <span className="font-medium text-foreground">Scope:</span>
+        <span className="ml-1">{license.scope}</span>
+      </div>
+    </div>
+    <span className="ml-1">Please go through this relevant information</span>
+  </Card>
+
+  ))}
+  </>
+
+  
 );
 
-const ChatInput = ({ 
-  value, 
-  onChange, 
-  onSend, 
-  isLoading 
-}: { 
-  value: string; 
-  onChange: (value: string) => void; 
-  onSend: () => void; 
-  isLoading: boolean; 
+const ChatInput = ({
+  value,
+  onChange,
+  onSend,
+  isLoading
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  onSend: () => void;
+  isLoading: boolean;
 }) => (
   <div className="p-4 border-t border-border">
     <div className="flex gap-2">
@@ -73,8 +106,12 @@ const ChatBot = () => {
   const { leadId, setStoredLeadId } = useLead();
   const { messages, isLoading, sendMessage, initializeChat, isInitialized } = useChat();
 
+
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
   // Initialize chat when opening for the first time
   useEffect(() => {
+
     if (isOpen && !hasInitialized.current) {
       hasInitialized.current = true;
       const initChat = async () => {
@@ -109,6 +146,11 @@ const ChatBot = () => {
 
     setIsOpen(!isOpen);
   };
+
+  const handleSuggestion = (text: string) => {
+    setShowSuggestions(false);
+  };
+
 
   return (
     <>
@@ -145,9 +187,22 @@ const ChatBot = () => {
             {/* Messages Area */}
             <ScrollArea className="flex-1 px-4 pb-4">
               <div className="space-y-3">
-                {messages.map((message) => (
-                  <MessageBubble key={message.id} message={message} />
-                ))}
+                {messages.map((message) => {
+                  const isBotReplyWithSuggestions =
+                    typeof message.text === "object" &&
+                    Array.isArray(message.text.relevant_licenses) &&
+                    message.text.relevant_licenses.length > 0;
+                  return (
+                    <>
+                      <MessageBubble key={message.id} message={message} />
+                      {isBotReplyWithSuggestions && (
+                        <SuggestionCard suggestions={(message.text as any).relevant_licenses} />
+                      )}
+
+                    </>
+                  )
+                }
+                )}
                 {isLoading && (
                   <div className="flex justify-start">
                     <div className="max-w-[80%] p-3 rounded-lg text-sm bg-secondary text-secondary-foreground">

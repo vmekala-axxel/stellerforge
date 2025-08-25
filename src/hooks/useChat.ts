@@ -3,7 +3,7 @@ import { api, ChatHistoryItem } from '@/lib/api';
 
 export interface ChatMessage {
   id: number;
-  text: string;
+  text: string | { reply: string; [key: string]: any };
   isBot: boolean;
   timestamp?: string;
 }
@@ -12,7 +12,7 @@ export const useChat = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 1,
-      text: "Hello! I'm the Stellar Forge Corporation AI assistant. How can I help you today?",
+      text: "Hello! I'm the GM Freezone AI assistant. How can I help you today?",
       isBot: true,
     },
   ]);
@@ -26,6 +26,7 @@ export const useChat = () => {
     try {
       initRef.current = true;
       setIsLoading(true);
+      
       const response = await api.initChat(leadId);
       
       // For new leads, keep the default welcome message
