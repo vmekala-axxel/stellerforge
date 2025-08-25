@@ -39,28 +39,29 @@ const MessageBubble = ({ message }: { message: ChatMessage }) => {
 };
 
 const SuggestionCard = ({ suggestions }) => (
-<>
-  {suggestions.map((license, idx) => (
+  <>
+    {suggestions.map((license, idx) => (
 
-    <Card className="bg-muted/10 border border-muted rounded-lg p-4 shadow-sm w-full max-w-md">
-    <div className="text-primary font-semibold text-lg mb-1">🏭 {license.license_type}</div>
-    <div className="text-muted-foreground text-sm mb-3">
-      {license.duration}
-    </div>
+      <Card className="bg-muted/10 border border-muted rounded-lg p-4 shadow-sm w-full max-w-md">
+        <div className="text-primary font-semibold text-lg mb-1">🏭 {license.license_type}</div>
+        <div className="text-muted-foreground text-sm mb-3">
+          {license.duration}
+        </div>
 
-    <div className="space-y-2 text-sm text-muted-foreground">
-      <div>
-        <span className="font-medium text-foreground">Scope:</span>
-        <span className="ml-1">{license.scope}</span>
-      </div>
-    </div>
-    <span className="ml-1">Please go through this relevant information</span>
-  </Card>
+        <div className="space-y-2 text-sm text-muted-foreground">
+          <div>
+            <span className="font-medium text-foreground">Scope:</span>
+            <span className="ml-1">{license.scope}</span>
+             <span className="ml-1">Please go through this relevant information</span>
+          </div>
+        </div>
+       
+      </Card>
 
-  ))}
+    ))}
   </>
 
-  
+
 );
 
 const ChatInput = ({
