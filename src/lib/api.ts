@@ -25,6 +25,12 @@ export interface ChatHistoryItem {
   timestamp: string;
 }
 
+export interface HFZASmartAssistData {
+  industry: string;
+  companyType: string;
+  country: string;
+}
+
 export interface InitChatResponse {
   lead: Lead;
   is_new_lead: boolean;
@@ -57,5 +63,17 @@ export const api = {
     // return data.reply;    
     return data;
 
+  },
+
+  async sendHFZASmartAssistData(data: HFZASmartAssistData): Promise<string> {
+    const response = await fetch(`${VITE_API_URL}/api/v1/smarthelper`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) throw new Error('Failed to send HFZA Smart Assist data');
+    const responseData = await response.json();
+    return responseData.recommendations;
   },
 };

@@ -1,3 +1,4 @@
+import HFZASmartAssist from "@/components/HFZASmartAssist";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FaUserTie } from "react-icons/fa";
 import { FaConnectdevelop } from "react-icons/fa6";
@@ -84,7 +85,7 @@ const Home = () => {
         </Card>
 
 
-
+        <HFZASmartAssist />
 
         <Card className="border-primary/20 hover:border-primary/40 transition-colors">
           <CardHeader>
