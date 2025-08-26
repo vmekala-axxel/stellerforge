@@ -66,15 +66,14 @@ export const api = {
   },
 
   async sendHFZASmartAssistData(data: HFZASmartAssistData): Promise<string> {
-    // const response = await fetch(`${VITE_API_URL}/api/v1/chats/smarthelper`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(data),
-    // });
+    const response = await fetch(`${VITE_API_URL}/api/v1/chats/smarthelper`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
 
-    // if (!response.ok) throw new Error('Failed to send HFZA Smart Assist data');
-    // const responseData = await response.json();
-    // return responseData.recommendations;
-    return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+    if (!response.ok) throw new Error('Failed to send HFZA Smart Assist data');
+    const responseData = await response.json();
+    return responseData.recommendations;
   },
 };
