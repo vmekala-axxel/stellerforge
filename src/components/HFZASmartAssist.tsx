@@ -240,7 +240,7 @@ const HFZASmartAssist: React.FC<HFZASmartAssistProps> = ({ onComplete }) => {
             </div>
             
             <h1 className="text-3xl font-bold text-white mb-2">
-              HFZA Smart Assist
+              GM Freezone Smart Assist
             </h1>
             <p className="text-white/80 text-lg">
               Get personalized license requirements, timelines, and facility recommendations in seconds.
@@ -273,26 +273,26 @@ const HFZASmartAssist: React.FC<HFZASmartAssistProps> = ({ onComplete }) => {
               </div>
           }
 
-          {/* Selected Details Chips */}
+                    {/* Selected Details Chips */}
           {(selectedIndustry || selectedCompanyType || selectedCountry) && (
-            <div className="flex flex-wrap gap-2 mb-6 justify-center">
+            <div className="flex flex-wrap gap-3 mb-6 justify-center">
                 {selectedIndustry && (
-                <Badge variant="secondary" className="bg-blue-600/20 text-blue-300 border-blue-500/30 px-3 py-1">
+                 <Badge variant="secondary" className="bg-blue-600/20 text-blue-300 border-blue-500/30 px-4 py-2 text-base font-medium">
                     {selectedIndustry}
-                </Badge>
+                 </Badge>
                 )}
                 {selectedCompanyType && (
-                <Badge variant="secondary" className="bg-green-600/20 text-green-300 border-green-500/30 px-3 py-1">
+                 <Badge variant="secondary" className="bg-green-600/20 text-green-300 border-green-500/30 px-4 py-2 text-base font-medium">
                     {getSelectedCompanyTypeLabel()}
-                </Badge>
+                 </Badge>
                 )}
                 {selectedCountry && (
-                <Badge variant="secondary" className="bg-purple-600/20 text-purple-300 border-purple-500/30 px-3 py-1">
+                 <Badge variant="secondary" className="bg-purple-600/20 text-purple-300 border-purple-500/30 px-4 py-2 text-base font-medium">
                     {selectedCountry}
-                </Badge>
+                 </Badge>
                 )}
-            </div>
-          )}
+              </div>
+            )}
 
           {/* Step 1: Industry Selection */}
           {step === 1 && (
@@ -345,31 +345,31 @@ const HFZASmartAssist: React.FC<HFZASmartAssistProps> = ({ onComplete }) => {
             </div>
           )}
 
-          {/* Step 3: Country Selection */}
-          {step === 3 && (
+                    {/* Step 3: Country Selection */}
+          {step === 3 && !apiResponse && (
             <div className="space-y-6 max-w-md mx-auto">
-            
-              <h2 className="text-2xl font-bold text-white text-center mb-6">
-                Select your country
-              </h2>
-              <Select onValueChange={handleCountrySelect}>
-                <SelectTrigger className="w-full bg-gray-800/50 border-gray-600 text-white">
-                  <SelectValue placeholder="Choose your country" />
-                </SelectTrigger>
-                <SelectContent className="bg-gray-800 border-gray-600 max-h-60">
-                  {countries.map((country) => (
-                    <SelectItem
-                      key={country}
-                      value={country}
-                      className="text-white hover:bg-gray-700 focus:bg-gray-700"
-                    >
-                      {country}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          )}
+             
+                <h2 className="text-2xl font-bold text-white text-center mb-6">
+                  Select your country
+                </h2>
+                <Select onValueChange={handleCountrySelect}>
+                  <SelectTrigger className="w-full bg-gray-800/50 border-gray-600 text-white">
+                    <SelectValue placeholder="Choose your country" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-800 border-gray-600 max-h-60">
+                    {countries.map((country) => (
+                      <SelectItem
+                        key={country}
+                        value={country}
+                        className="text-white hover:bg-gray-700 focus:bg-gray-700"
+                      >
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
 
           {/* Loading State */}
           {isLoading && (
@@ -395,14 +395,33 @@ const HFZASmartAssist: React.FC<HFZASmartAssistProps> = ({ onComplete }) => {
             <div className="mt-6 p-4 bg-green-600/20 border border-green-500/30 rounded-lg">
                 {apiResponse  && (
                   <> 
-                    <h4 className="text-white font-medium mb-2">Smarthelper Recommendations:</h4>
-                    <pre className="text-xs text-white/70 overflow-auto">
-                    {apiResponse}
-                    </pre>
-                  </>
-                )}
-            </div>
+                     <h4 className="text-white font-medium mb-2">Smarthelper Recommendations:</h4>
+                     <pre className="text-xs text-white/70 overflow-auto">
+                     {apiResponse}
+                     </pre>
+                   </>
+                  )}
+               
+             </div>
           )}
+          {apiResponse && (
+            <div className="mt-4 flex justify-center">
+              <Button
+                variant="outline"
+                className="bg-gray-800/50 border-gray-600 text-white hover:bg-blue-600/20 hover:border-blue-500"
+                onClick={() => {
+                  setStep(1);
+                  setSelectedIndustry('');
+                  setSelectedCompanyType('');
+                  setSelectedCountry('');
+                  setApiResponse(null);
+                  setError(null);
+                  setIsLoading(false);
+                }}
+              >
+                Start Over
+              </Button>
+          </div>)}
         </CardContent>
       </Card>
     </div>
