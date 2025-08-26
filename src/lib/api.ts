@@ -66,7 +66,7 @@ export const api = {
   },
 
   async sendHFZASmartAssistData(data: HFZASmartAssistData): Promise<string> {
-    const response = await fetch(`${VITE_API_URL}/api/v1/smarthelper`, {
+    const response = await fetch(`${VITE_API_URL}/api/v1/chats/smarthelper`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
