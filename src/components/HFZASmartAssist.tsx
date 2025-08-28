@@ -8,7 +8,7 @@ import { api } from '@/lib/api';
 interface HFZASmartAssistProps {
   onComplete?: (data: {
     industry: string;
-    companyType: string;
+    company_type: string;
     country: string;
   }) => void;
 }
@@ -181,7 +181,7 @@ const HFZASmartAssist: React.FC<HFZASmartAssistProps> = ({ onComplete }) => {
     try {
       const data = {
         industry: selectedIndustry,
-        companyType: selectedCompanyType,
+        company_type: selectedCompanyType,
         country: country
       };
       

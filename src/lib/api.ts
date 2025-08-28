@@ -27,7 +27,7 @@ export interface ChatHistoryItem {
 
 export interface HFZASmartAssistData {
   industry: string;
-  companyType: string;
+  company_type: string;
   country: string;
 }
 
