@@ -25,17 +25,17 @@ const industries = [
 
 const companyTypes = [
   {
-    value: 'individual',
+    value: 'FZE',
     label: 'Individual Owned',
     description: '(Free Zone Establishment)'
   },
   {
-    value: 'multiple',
+    value: 'FZC',
     label: 'Multiple-Shareholder Owned',
     description: '(Free Zone Company)'
   },
   {
-    value: 'branch',
+    value: 'Branch of a company',
     label: 'Branch',
     description: '(of any company)'
   }
