@@ -221,6 +221,17 @@ const HFZASmartAssist: React.FC<HFZASmartAssistProps> = ({ onComplete }) => {
     return companyType ? companyType.label : '';
   };
 
+  const renderMarkdownContent = (content: string) => {
+    if (!content) return '';
+    
+    return content
+    .replace(/### (.*?)\n/g, '<h3 class="text-xl font-bold text-blue-300 mb-3 mt-6">$1</h3>')
+    .replace(/## (.*?)\n/g, '<h2 class="text-2xl font-bold text-white mb-4 mt-8">$1</h2>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+    .replace(/\n\n/g, '</p><p class="mb-4">')
+    .replace(/\n/g, '<br>');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-900/20 via-blue-900/30 to-purple-900/20 flex items-center justify-center p-4">
       <Card className="w-full bg-transparent border-0 backdrop-blur-sm">
@@ -390,19 +401,24 @@ const HFZASmartAssist: React.FC<HFZASmartAssistProps> = ({ onComplete }) => {
             </div>
           )}
 
-          {/* API Response */}
+                    {/* API Response */}
           {apiResponse && (
-            <div className="mt-6 p-4 bg-green-600/20 border border-green-500/30 rounded-lg">
-                {apiResponse  && (
-                  <> 
-                     <h4 className="text-white font-medium mb-2">Smarthelper Recommendations:</h4>
-                     <pre className="text-xs text-white/70 overflow-auto">
-                     {apiResponse}
-                     </pre>
-                   </>
+            <div className="mt-6 p-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg">
+              <div className="text-center mb-6">
+                <h3 className="text-2xl font-bold text-white mb-2">Recommendations</h3>
+              </div>
+              
+              <div className="prose prose-invert max-w-none">
+                <div className="text-white/90 leading-relaxed space-y-4">
+                  {apiResponse && (
+                    <div 
+                      className="text-sm"
+                      dangerouslySetInnerHTML={{ __html: renderMarkdownContent(apiResponse) }}
+                    />
                   )}
-               
-             </div>
+                </div>
+              </div>
+            </div>
           )}
           {apiResponse && (
             <div className="mt-4 flex justify-center">
